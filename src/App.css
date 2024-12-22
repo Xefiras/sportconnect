@@ -1,0 +1,214 @@
+/* Estilos para la barra de búsqueda */
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #cccccc;
+  box-sizing: border-box;
+  margin-bottom: 15px; /* Espacio inferior para separar del siguiente elemento */
+  background-color: #7986cb;
+  color: white
+}
+
+.search-bar:focus {
+  outline: none; /* Quita el contorno al hacer foco en la barra de búsqueda */
+  border-color: white; /* Cambia el color del borde al hacer foco */
+}
+
+.search-bar::placeholder {
+  color: white; /* Color del texto del marcador de posición semi-transparente blanco */
+}
+
+/* Estilos para el contenedor de login */
+.login-container {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+  background-color: #f9f9f9;
+}
+
+/* Estilo para el título del login */
+.login-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Estilos para el formulario de login */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para los grupos de formulario */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Estilos para los campos de entrada */
+.input-field {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Estilos para el botón de enviar */
+.submit-button {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.submit-button:hover {
+  background-color: #45a049;
+}
+
+/* Estilos para el mensaje de error */
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+
+.error{
+  color: red;
+}
+.formulario {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+}
+
+body {
+  background-image: url('../src/background.jpg');
+  background-size: cover; /* Para que la imagen cubra todo el fondo */
+  background-position: center; /* Para centrar la imagen */
+  background-repeat: no-repeat; /* Para que la imagen no se repita */
+  background-attachment: fixed; /* Para fijar la imagen de fondo */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+}
+
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+.LogoMain {
+  width: 500; /* Ancho del logotipo */
+  height: 150px; /* Altura ajustada automáticamente */
+  display: block; /* Hace que el logotipo se muestre como un bloque */
+  margin: 0 auto; /* Centra el logotipo horizontalmente */
+  /* Agrega otros estilos según sea necesario */
+}
+.btn-primary {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.deportivos-accordion {
+  width: 100%;
+}
+
+.deportivo-card {
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.accordion-header {
+  background-color: #7986cb;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header:hover {
+  background-color: #59698d;
+}
+
+.accordion-content {
+  padding: 10px;
+}
+.sub-accordion-content {
+    display: block;
+    padding-left: 20px; /* Ajusta el espaciado para mostrar la jerarquía */
+}
+
+.sub-accordion-content p {
+    margin: 5px 0;
+    padding-left: 20px; /* Ajusta el espaciado para mostrar la jerarquía */
+    font-size: 14px;
+    color: #333;
+}
+
+.sub-accordion-content h3 {
+    margin: 10px 0;
+    padding-left: 10px; /* Ajusta el espaciado para mostrar la jerarquía */
+    font-size: 18px;
+    color: #555;
+    cursor: pointer;
+}
+h1{
+  color:black;
+}
+.sub-accordion {
+  margin-top: 10px;
+}
+
+.sub-accordion h3 {
+  background-color: #59698d;
+  color: white;
+  padding: 8px;
+  margin-bottom: 5px;
+}
+
+.sub-accordion p {
+  margin: 5px 0;
+}
+
+.cancha-info {
+  background-color: #e0e0e0;
+  padding: 8px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}

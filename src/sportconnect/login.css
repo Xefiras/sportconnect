@@ -1,0 +1,59 @@
+/* Estilos para el contenedor de login */
+.login-container {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #f9f9f9;
+}
+
+/* Estilo para el título del login */
+.login-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Estilos para el formulario de login */
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para los grupos de formulario */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Estilos para los campos de entrada */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Estilos para el botón de enviar */
+.submit-button {
+    padding: 10px;
+    border-radius: 4px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para el mensaje de error */
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    text-align: center;
+}

@@ -145,7 +145,7 @@ const CompCreateCancha = () => {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: "Ocurrió un error al guardar la cancha.",
+        text: "Ocurrió un error al guardar la cancha. Revisa que las fechas hayan sido ingresadas.",
       });
     }
   };
@@ -178,92 +178,197 @@ const CompCreateCancha = () => {
             onChange={(e) => setTipoCancha(e.target.value)}
             className="form-control"
           >
-            <option value="Fútbol">Fútbol</option>
-            <option value="Básquetbol">Básquetbol</option>
-            <option value="Tenis">Tenis</option>
+                  <option value="Fútbol">Fútbol</option>
+                  <option value="Básquetbol">Básquetbol</option>
+                  <option value="Tenis">Tenis</option>
+                  <option value="Voleibol">Voleibol</option>
+                  <option value="Béisbol">Béisbol</option>
+                  <option value="Hockey">Hockey</option>
+                  <option value="Natación">Natación</option>
+                  <option value="Atletismo">Atletismo</option>
+                  <option value="Rugby">Rugby</option>
+                  <option value="Fútbol Americano">Fútbol Americano</option>
+                  <option value="Padel">Padel</option>
+                  <option value="Cricket">Cricket</option>
+                  <option value="Golf">Golf</option>
+                  <option value="Ping Pong">Ping Pong</option>
+                  <option value="Badminton">Badminton</option>
+                  <option value="Esgrima">Esgrima</option>
+                  <option value="Karate">Karate</option>
+                  <option value="Taekwondo">Taekwondo</option>
+                  <option value="Boxeo">Boxeo</option>
+                  <option value="Arquería">Arquería</option>
           </select>
         </div>
-        <div className="form-group">
-          <label>Numero de Cancha</label>
-          <input
-            type="text"
-            value={Numero_Cancha}
-            onChange={(e) => setNumeroCancha(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
-          <label>Capacidad de Jugadores</label>
-          <input
-            type="number"
-            value={Capacidad_Jugadores}
-            onChange={(e) => setCapacidadJugadores(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
-          <label>Mejoras</label>
-          <div>
-            <input
-              type="text"
-              placeholder="Nombre"
-              value={newMejora.nombre_mejora}
-              onChange={(e) =>
-                setNewMejora({ ...newMejora, nombre_mejora: e.target.value })
-              }
-              className="form-control"
-            />
-            <input
-              type="text"
-              placeholder="Descripción"
-              value={newMejora.descripcion_mejora}
-              onChange={(e) =>
-                setNewMejora({
-                  ...newMejora,
-                  descripcion_mejora: e.target.value,
-                })
-              }
-              className="form-control"
-            />
-            <input
-              type="text"
-              placeholder="Justificación"
-              value={newMejora.justificacion_mejora}
-              onChange={(e) =>
-                setNewMejora({
-                  ...newMejora,
-                  justificacion_mejora: e.target.value,
-                })
-              }
-              className="form-control"
-            />
-            <input
-              type="date"
-              value={newMejora.fecha_implementacion}
-              onChange={(e) =>
-                setNewMejora({
-                  ...newMejora,
-                  fecha_implementacion: e.target.value,
-                })
-              }
-              className="form-control"
-            />
-            <button
-              type="button"
-              className="btn btn-secondary mt-2"
-              onClick={addMejora}
-            >
-              Agregar Mejora
-            </button>
+                <div className="form-group">
+                      <label>Numero de Cancha</label>
+                      <input
+                        type="text"
+                        value={Numero_Cancha}
+                        onChange={(e) => setNumeroCancha(e.target.value)}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Capacidad de Jugadores</label>
+                      <input
+                        type="number"
+                        value={Capacidad_Jugadores}
+                        onChange={(e) => setCapacidadJugadores(e.target.value)}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+              <label>Material del Piso</label>
+              <select
+                value={Material_Piso}
+                onChange={(e) => setMaterialPiso(e.target.value)}
+                className="form-control"
+              >
+                <option value="Césped">Césped</option>
+                <option value="Concreto">Concreto</option>
+                <option value="Madera">Madera</option>
+                <option value="Sintético">Sintético</option>
+                <option value="Tierra">Tierra</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Tiene Techo</label>
+              <input
+                type="checkbox"
+                checked={Techado}
+                onChange={(e) => setTechado(e.target.checked)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Tiene Gradas</label>
+              <input
+                type="checkbox"
+                checked={Con_Gradas}
+                onChange={(e) => setConGradas(e.target.checked)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Estado</label>
+              <select
+                value={Estado}
+                onChange={(e) => setEstado(e.target.value)}
+                className="form-control"
+              >
+                <option value="Excelente">Excelente</option>
+                <option value="Buena">Buena</option>
+                <option value="Regular">Regular</option>
+                <option value="Mala">Mala</option>
+              </select>
+            </div>
+          <div className="form-group">
+              <label>Mejoras</label>
+              <div
+                style={{
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                  marginBottom: "20px",
+                }}
+              >
+                <h3>Agregar Nueva Mejora</h3>
+                <div className="form-group">
+                  <label>Nombre de la Mejora</label>
+                  <input
+                    type="text"
+                    placeholder="Nombre de la Mejora"
+                    value={newMejora.nombre_mejora}
+                    onChange={(e) =>
+                      setNewMejora({ ...newMejora, nombre_mejora: e.target.value })
+                    }
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Descripción</label>
+                  <input
+                    type="text"
+                    placeholder="Descripción"
+                    value={newMejora.descripcion_mejora}
+                    onChange={(e) =>
+                      setNewMejora({
+                        ...newMejora,
+                        descripcion_mejora: e.target.value,
+                      })
+                    }
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Justificación</label>
+                  <input
+                    type="text"
+                    placeholder="Justificación"
+                    value={newMejora.justificacion_mejora}
+                    onChange={(e) =>
+                      setNewMejora({
+                        ...newMejora,
+                        justificacion_mejora: e.target.value,
+                      })
+                    }
+                    className="form-control"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Fecha de Implementación</label>
+                  <input
+                    type="date"
+                    value={newMejora.fecha_implementacion}
+                    onChange={(e) =>
+                      setNewMejora({
+                        ...newMejora,
+                        fecha_implementacion: e.target.value,
+                      })
+                    }
+                    className="form-control"
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary mt-2"
+                  onClick={addMejora}
+                  style={{ marginBottom: "20px" }}
+                >
+                  Agregar Mejora
+                </button>
+              </div>
+            <div>
+      <h3>Lista de Mejoras</h3>
+      {mejoras.length > 0 ? (
+        mejoras.map((mejora, index) => (
+          <div
+            key={index}
+            style={{
+              border: "1px solid #ccc",
+              padding: "10px",
+              marginBottom: "10px",
+              borderRadius: "5px",
+            }}
+          >
+            <p>
+              <strong>Nombre:</strong> {mejora.nombre_mejora}
+            </p>
+            <p>
+              <strong>Descripción:</strong> {mejora.descripcion_mejora}
+            </p>
+            <p>
+              <strong>Justificación:</strong> {mejora.justificacion_mejora}
+            </p>
+            <p>
+              <strong>Fecha de Implementación:</strong>{" "}
+              {mejora.fecha_implementacion}
+            </p>
           </div>
-          <ul>
-            {mejoras.map((mejora, index) => (
-              <li key={index}>
-                {mejora.nombre_mejora} - {mejora.descripcion_mejora}
-              </li>
-            ))}
-          </ul>
-        </div>
+        ))
+      ) : (
+        <p>No se han agregado mejoras.</p>
+      )}
+    </div>
+  </div>
         <button type="submit" className="btn btn-primary">
           Crear Cancha
         </button>

@@ -5,8 +5,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const URI = "http://localhost:8080/api/direcciones/createDireccion";
-const URICDE = "http://localhost:8080/api/direcciones/checkDireccion";
+const URI_CREATE_DIRECCION = "http://localhost:8080/api/direcciones/createDireccion";
+const URI_CHECK_DIRECCION = "http://localhost:8080/api/direcciones/checkDireccion";
 
 /* Inicio Funcionamiento de Maps */
 const Map = ({ center, zoom, onMapClick, marker }) => {
@@ -50,19 +50,18 @@ const Map = ({ center, zoom, onMapClick, marker }) => {
 
 const CompCreateDireccion = () => {
   const navigate = useNavigate();
-  const { deportivo_id } = useParams(); // Recibir el ID del deportivo
+  const { deportivo_id } = useParams();
   const [calle, setCalle] = useState("");
   const [alcaldia, setAlcaldia] = useState("Álvaro Obregón");
   const [codigoPostal, setCodigoPostal] = useState("");
   const [coords, setCoords] = useState("");
   const [referencias, setReferencias] = useState("");
-  const [entre_calle1, setEntreCalle1] = useState("");
-  const [entre_calle2, setEntreCalle2] = useState("");
+  const [entreCalle1, setEntreCalle1] = useState("");
+  const [entreCalle2, setEntreCalle2] = useState("");
 
   const [center, setCenter] = useState({ lat: 19.430154, lng: -99.137414 });
   const [zoom, setZoom] = useState(12);
   const [marker, setMarker] = useState(null);
-  const searchInputRef = useRef(null);
 
   const handleMapClick = (latLng) => {
     const newMarker = { lat: latLng.lat(), lng: latLng.lng() };
@@ -71,7 +70,7 @@ const CompCreateDireccion = () => {
     setCenter(newMarker);
     setZoom(17);
   };
-  console.log(deportivo_id);
+
   const alcaldiasCDMX = [
     "Álvaro Obregón",
     "Azcapotzalco",
@@ -91,29 +90,6 @@ const CompCreateDireccion = () => {
     "Xochimilco",
   ];
 
-  useEffect(() => {
-    if (searchInputRef.current && window.google) {
-      const autocomplete = new google.maps.places.Autocomplete(searchInputRef.current);
-      autocomplete.setTypes(["establishment"]);
-      const mexicoCityBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(19.1500, -99.3250),
-        new google.maps.LatLng(19.6300, -98.9900)
-      );
-      autocomplete.setBounds(mexicoCityBounds);
-      autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (place && place.geometry) {
-          const location = place.geometry.location;
-          const newCenter = { lat: location.lat(), lng: location.lng() };
-          setCenter(newCenter);
-          setMarker(newCenter);
-          setCoords(`${newCenter.lat}, ${newCenter.lng}`);
-          setZoom(18);
-        }
-      });
-    }
-  }, [searchInputRef]);
-
   const showErrorAlert = (message) => {
     Swal.fire({
       icon: "error",
@@ -125,7 +101,7 @@ const CompCreateDireccion = () => {
 
   const checkDireccionExistente = async () => {
     try {
-      const response = await axios.get(`${URICDE}`, {
+      const response = await axios.get(URI_CHECK_DIRECCION, {
         params: {
           calle,
           alcaldia,
@@ -134,64 +110,67 @@ const CompCreateDireccion = () => {
       });
       return response.data;
     } catch (error) {
-      console.error("Error al verificar la existencia de la dirección:", error);
+      console.error("Error al verificar la dirección:", error);
       return false;
     }
   };
 
   const store = async (e) => {
     e.preventDefault();
-  
-    if (!calle || !alcaldia || !codigoPostal || !coords || !referencias || !entre_calle1 || !entre_calle2) {
+
+    // Validar campos requeridos
+    if (!calle || !alcaldia || !codigoPostal || !coords || !referencias || !entreCalle1 || !entreCalle2) {
       showErrorAlert("Todos los campos son obligatorios.");
       return;
     }
-  
+
+    // Validar que el código postal no tenga letras
+    const codigoPostalRegex = /^[0-9]{5}$/;
+    if (!codigoPostalRegex.test(codigoPostal)) {
+      showErrorAlert("El código postal debe contener exactamente 5 dígitos numéricos.");
+      return;
+    }
+
     try {
       const direccionExistente = await checkDireccionExistente();
       if (direccionExistente) {
         showErrorAlert("Ya existe un deportivo con esa dirección.");
         return;
       }
-  
-      const datosDireccion = {
+
+      const nuevaDireccion = {
         calle,
         alcaldia,
         codigoPostal,
         coords,
         referencias,
-        entre_calle1,
-        entre_calle2,
-        deportivo: {
-          idDeportivo: parseInt(deportivo_id) // Aquí se ajusta el ID del deportivo.
-        }
+        entre_calle1: entreCalle1,
+        entre_calle2: entreCalle2,
+        deportivo: { idDeportivo: parseInt(deportivo_id, 10) },
       };
-  
-      console.log("Datos enviados al backend:", datosDireccion);
-  
-      const response = await axios.post(URI, datosDireccion);
+
+      const response = await axios.post(URI_CREATE_DIRECCION, nuevaDireccion);
       if (response.status === 201) {
-        Swal.fire("Éxito", "La dirección fue creada correctamente.", "success");
+        Swal.fire("Éxito", "Dirección creada correctamente.", "success");
         navigate(`/createHorario/${deportivo_id}`);
       }
     } catch (error) {
-      console.error("Error al crear la dirección:", error);
+      console.error("Error al guardar la dirección:", error);
       showErrorAlert("Ocurrió un error al guardar la dirección.");
     }
   };
-  
 
   return (
     <div className="formulario">
-      <h1>Ingresar nueva dirección:</h1>
+      <h1>Ingresar nueva dirección</h1>
       <form onSubmit={store}>
         <div className="form-group">
           <label>Calle</label>
-          <input type="text" value={calle} onChange={(e) => setCalle(e.target.value)} className="form-control" required />
+          <input type="text" value={calle} onChange={(e) => setCalle(e.target.value)} className="form-control" />
         </div>
         <div className="form-group">
           <label>Alcaldía</label>
-          <select value={alcaldia} onChange={(e) => setAlcaldia(e.target.value)} className="form-control" required>
+          <select value={alcaldia} onChange={(e) => setAlcaldia(e.target.value)} className="form-control">
             {alcaldiasCDMX.map((alc, index) => (
               <option key={index} value={alc}>
                 {alc}
@@ -201,9 +180,9 @@ const CompCreateDireccion = () => {
         </div>
         <div className="form-group">
           <label>Código Postal</label>
-          <input type="text" value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} className="form-control" maxLength={5} required />
+          <input type="text" value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} className="form-control" maxLength={5} />
         </div>
-        <div>
+        <div className="form-group">
           <label>Coordenadas</label>
           <input type="text" value={coords} disabled className="form-control" />
         </div>
@@ -212,15 +191,15 @@ const CompCreateDireccion = () => {
         </div>
         <div className="form-group">
           <label>Referencias</label>
-          <input type="text" value={referencias} onChange={(e) => setReferencias(e.target.value)} className="form-control" required />
+          <input type="text" value={referencias} onChange={(e) => setReferencias(e.target.value)} className="form-control" />
         </div>
         <div className="form-group">
           <label>Entre Calle 1</label>
-          <input type="text" value={entre_calle1} onChange={(e) => setEntreCalle1(e.target.value)} className="form-control" required />
+          <input type="text" value={entreCalle1} onChange={(e) => setEntreCalle1(e.target.value)} className="form-control" />
         </div>
         <div className="form-group">
           <label>Entre Calle 2</label>
-          <input type="text" value={entre_calle2} onChange={(e) => setEntreCalle2(e.target.value)} className="form-control" required />
+          <input type="text" value={entreCalle2} onChange={(e) => setEntreCalle2(e.target.value)} className="form-control" />
         </div>
         <button type="submit" className="btn btn-primary">
           Ingresar Dirección

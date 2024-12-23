@@ -149,7 +149,7 @@ const CompEditCancha = () => {
         Swal.fire("Error", "No se pudo editar la cancha.", "error");
       }
     } catch (error) {
-      Swal.fire("Error", "Hubo un problema al editar la cancha.", "error");
+      Swal.fire("Error", "Hubo un problema al editar la cancha. Revisa que las fechas hayan sido ingresadas.", "error");
     }
   };
 
@@ -214,7 +214,32 @@ const CompEditCancha = () => {
         </div>
         <div className="form-group">
           <label>Tipo de Cancha</label>
-          <input type="text" value={tipo_cancha} onChange={(e) => setTipoCancha(e.target.value)} className="form-control" />
+          <select
+            value={tipo_cancha}
+            onChange={(e) => setTipoCancha(e.target.value)}
+            className="form-control"
+          >
+            <option value="Fútbol">Fútbol</option>
+            <option value="Básquetbol">Básquetbol</option>
+            <option value="Tenis">Tenis</option>
+            <option value="Voleibol">Voleibol</option>
+            <option value="Béisbol">Béisbol</option>
+            <option value="Hockey">Hockey</option>
+            <option value="Natación">Natación</option>
+            <option value="Atletismo">Atletismo</option>
+            <option value="Rugby">Rugby</option>
+            <option value="Fútbol Americano">Fútbol Americano</option>
+            <option value="Padel">Padel</option>
+            <option value="Cricket">Cricket</option>
+            <option value="Golf">Golf</option>
+            <option value="Ping Pong">Ping Pong</option>
+            <option value="Badminton">Badminton</option>
+            <option value="Esgrima">Esgrima</option>
+            <option value="Karate">Karate</option>
+            <option value="Taekwondo">Taekwondo</option>
+            <option value="Boxeo">Boxeo</option>
+            <option value="Arquería">Arquería</option>
+          </select>
         </div>
         <div className="form-group">
           <label>Numero de Cancha</label>
@@ -243,7 +268,11 @@ const CompEditCancha = () => {
         <div>
           <h2>Mejoras</h2>
           {mejoras.map((mejora, index) => (
-            <div key={index} className="form-group" style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
+            <div
+              key={index}
+              className="form-group"
+              style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}
+            >
               <h3>Mejora {index + 1}</h3>
               <label>Nombre de la Mejora</label>
               <input
@@ -273,16 +302,29 @@ const CompEditCancha = () => {
                 onChange={(e) => updateMejora(index, "fecha_implementacion", e.target.value)}
                 className="form-control"
               />
-              <button type="button" onClick={() => deleteMejora(mejora.id_mejora)} className="btn btn-danger mt-2">
+              <button
+                type="button"
+                onClick={() => deleteMejora(mejora.id_mejora)}
+                className="btn btn-danger mt-2"
+              >
                 Eliminar Mejora
               </button>
             </div>
           ))}
-          <button type="button" onClick={addMejora} className="btn btn-secondary">
+          <button
+            type="button"
+            onClick={addMejora}
+            className="btn btn-secondary"
+            style={{ marginBottom: "20px" }} // Más espacio debajo del botón
+          >
             Agregar Mejora
           </button>
         </div>
-        <button type="submit" className="btn btn-primary">
+        <button
+          type="submit"
+          className="btn btn-primary"
+          style={{ marginTop: "30px" }} // Más espacio encima del botón
+        >
           Editar Cancha
         </button>
       </form>

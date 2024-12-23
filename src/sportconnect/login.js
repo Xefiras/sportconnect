@@ -80,7 +80,7 @@ const CompLogin = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="contrasena">contrasena:</label>
+                    <label htmlFor="contrasena">Contraseña:</label>
                     <input
                         type="password"
                         id="contrasena"

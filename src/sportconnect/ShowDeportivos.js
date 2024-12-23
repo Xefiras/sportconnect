@@ -9,9 +9,9 @@ const URI = 'http://localhost:8080/api/';
 
 const CompShowDeportivos = () => {
     const {userType,RFC_CURP} = useParams();
-    console.log(RFC_CURP) //debe tener el mismo nombre de la variable que se pasa desde el componente anterior
+    //console.log(RFC_CURP) //debe tener el mismo nombre de la variable que se pasa desde el componente anterior
 
-    console.log(userType)
+    //console.log(userType)
     const navigate = useNavigate();
     const [deportivos, setDeportivos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -52,32 +52,30 @@ const CompShowDeportivos = () => {
     const searchDeportivos = (term) => {
         // Si el término de búsqueda está vacío, mostrar todos los deportivos
         if (!term.trim()) {
-            return deportivos;
+          return deportivos;
         }
-    
+      
         // Filtrar los deportivos según el término de búsqueda
         const filteredDeportivos = deportivos.filter((deportivo) => {
-            const nombreLower = deportivo.Nombre.toLowerCase();
-            const numeroRegistroStr = deportivo.numero_registro.toString().toLowerCase();
-            const termLower = term.toLowerCase();
-    
-            // Comprobar si el nombre o el número de registro incluyen el término de búsqueda
-            return nombreLower.includes(termLower) || numeroRegistroStr.includes(termLower);
+          const nombreLower = deportivo.nombre?.toLowerCase() || ""; // Verifica si existe 'nombre'
+          const numeroRegistroStr = deportivo.numero_registro?.toString().toLowerCase() || ""; // Verifica si existe 'numero_registro'
+          const termLower = term.toLowerCase();
+      
+          // Comprobar si el nombre o el número de registro incluyen el término de búsqueda
+          return nombreLower.includes(termLower) || numeroRegistroStr.includes(termLower);
         });
-    
+      
         return filteredDeportivos;
-    };
-    
-    
+      };    
 
     const getDeportivoInfo = async () => {
         const res = await axios.get(`${URI}deportivos/obtenerDeportivos`);
         setDeportivos(res.data);
-        console.log(res.data)
+       // console.log(res.data)
     }
 
     const getDeportivoInfoDeEncargado = async () => {
-        console.log("rfc", RFC_CURP)
+      //  console.log("rfc", RFC_CURP)
         const res = await axios.get(`${URI}deportivos/getDeportivoByEncargado/${RFC_CURP}`, {
         });
         setDeportivos(res.data);
@@ -89,7 +87,7 @@ const CompShowDeportivos = () => {
     }
 
     const deleteCancha = async (ID_Cancha) => {
-        await axios.delete(`${URI}deleteCancha/${ID_Cancha}`);
+        await axios.delete(`${URI}canchas/deleteCancha?idCancha=${ID_Cancha}`);
         getDeportivoInfoDeEncargado(); //Volvemos a las canchas pertenecientes al encargado
     }
 
@@ -99,7 +97,7 @@ const CompShowDeportivos = () => {
     //Creamos constante para esconder los divs dependiendo del tipo de usuario
     const shouldShowDiv = userType === "enc"; //Esconde funciones (div) para el admin
     const shouldHideDiv = userType === "admin"; //Esconde funciones (div) para el encargado, como modificar la direccion
-    console.log("should?",shouldShowDiv)
+   // console.log("should?",shouldShowDiv)
     
     const toggleAccordion = (idDeportivo) => {
         setExpandedDeportivo(idDeportivo === expandedDeportivo ? null : idDeportivo);

@@ -1,59 +1,88 @@
-/* Estilos para el contenedor de login */
+/* Contenedor del login con estilo Material Design */
 .login-container {
     width: 300px;
     margin: 0 auto;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e3f2fd; /* Azul claro agradable */
+    transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-/* Estilo para el título del login */
+.login-container:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px); /* Efecto flotante */
+}
+
+/* Título del login */
 .login-title {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
-    font-size: 1.5rem;
+    color: #1a237e; /* Azul oscuro */
+    font-size: 1.8rem;
     font-weight: bold;
+    letter-spacing: 0.5px;
 }
 
-/* Estilos para el formulario de login */
+/* Formulario con diseño Material Design */
 .login-form {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
 
-/* Estilos para los grupos de formulario */
-.form-group {
-    margin-bottom: 15px;
-}
-
-/* Estilos para los campos de entrada */
+/* Estilo para los campos de entrada */
 .input-field {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
+    border: 1px solid #90caf9; /* Azul claro */
     border-radius: 4px;
-    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1rem;
+    background-color: #ffffff; /* Fondo blanco limpio */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* Estilos para el botón de enviar */
+.input-field:focus {
+    border-color: #42a5f5; /* Azul intermedio */
+    box-shadow: 0 2px 4px rgba(66, 165, 245, 0.3);
+}
+
+/* Etiquetas de los campos */
+.input-label {
+    font-size: 0.9rem;
+    color: #546e7a; /* Gris azulado */
+    margin-bottom: 5px;
+}
+
+/* Botón de enviar */
 .submit-button {
-    padding: 10px;
+    padding: 12px;
     border-radius: 4px;
-    background-color: #4caf50;
+    background-color: #42a5f5; /* Azul intermedio */
     color: white;
     border: none;
     cursor: pointer;
     font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .submit-button:hover {
-    background-color: #45a049;
+    background-color: #1e88e5; /* Azul más oscuro al pasar el cursor */
+    box-shadow: 0 2px 4px rgba(30, 136, 229, 0.3);
 }
 
-/* Estilos para el mensaje de error */
+/* Mensaje de error */
 .error-message {
-    color: red;
+    color: #d32f2f; /* Rojo intenso */
     margin-bottom: 10px;
     text-align: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* Transiciones suaves para el hover */
+button, input {
+    transition: all 0.3s ease-in-out;
 }

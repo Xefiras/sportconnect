@@ -138,13 +138,13 @@ const CompCreateDeportivo = () => {
                 <div className="form-group">
                     <label>¿Acepta Mascotas?</label>
                     <input type="checkbox" checked={acepta_mascotas} onChange={(e) => setAceptaMascotas(e.target.checked)} />
-                    <label>¿Tiene tiene_tienda?</label>
+                    <label>¿Tiene Tienda?</label>
                     <input type="checkbox" checked={tiene_tienda} onChange={(e) => setTienda(e.target.checked)} />
-                    <label>¿Tiene tiene_vestidores?</label>
+                    <label>¿Tiene Vestidores?</label>
                     <input type="checkbox" checked={tiene_vestidores} onChange={(e) => setVestidores(e.target.checked)} />
-                    <label>¿Tiene tiene_regaderas?</label>
+                    <label>¿Tiene Regaderas?</label>
                     <input type="checkbox" checked={tiene_regaderas} onChange={(e) => setRegaderas(e.target.checked)} />
-                    <label>¿Hay tiene_medico?</label>
+                    <label>¿Hay Tiene Médico?</label>
                     <input type="checkbox" checked={tiene_medico} onChange={(e) => setMedico(e.target.checked)} />
                                 
                 </div>

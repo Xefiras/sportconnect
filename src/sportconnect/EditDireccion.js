@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 
 const URI = "http://localhost:8080/api/direcciones/obtenerDireccion"; // URI para obtener dirección
 const updURI = "http://localhost:8080/api/direcciones/updateDireccion"; // URI para actualizar dirección
+const checkURI = "http://localhost:8080/api/direcciones/checkDireccion"; // URI para verificar duplicados
 
 /* Inicio Funcionamiento de Maps */
 const Map = ({ center, zoom, onMapClick, marker }) => {
@@ -40,10 +41,8 @@ const Map = ({ center, zoom, onMapClick, marker }) => {
         map,
       });
       map.markers = [newMarker];
-
-      // Hacer zoom automáticamente al marcador
       map.setCenter(marker);
-      map.setZoom(18); // Zoom al nivel deseado
+      map.setZoom(18);
     }
   }, [map, marker]);
 
@@ -65,12 +64,11 @@ const CompEditDireccion = () => {
   const [center, setCenter] = useState({ lat: 19.430154, lng: -99.137414 });
   const [zoom, setZoom] = useState(12);
   const [marker, setMarker] = useState(null);
-  const searchInputRef = useRef(null);
 
   const handleMapClick = (latLng) => {
     const newMarker = { lat: latLng.lat(), lng: latLng.lng() };
     setMarker(newMarker);
-    setCoords(`${newMarker.lat},${newMarker.lng}`); // Eliminar espacios para que coincida con el formato esperado
+    setCoords(`${newMarker.lat},${newMarker.lng}`);
     setCenter(newMarker);
     setZoom(18);
   };
@@ -103,15 +101,66 @@ const CompEditDireccion = () => {
     });
   };
 
+  const checkDireccionExistente = async () => {
+    try {
+      const response = await axios.get(checkURI, {
+        params: {
+          calle,
+          alcaldia,
+          codigo_postal: codigoPostal,
+        },
+      });
+  
+      const exists = response.data; // true o false según el backend
+      if (exists) {
+        // Verificar si los datos coinciden con los de la dirección actual
+        const currentDireccion = await axios.get(`${URI}?idDireccion=${ID_Direccion}`);
+        const { calle: currentCalle, alcaldia: currentAlcaldia, codigoPostal: currentCodigoPostal } = currentDireccion.data;
+  
+        // Si coinciden, no es un duplicado
+        if (
+          calle === currentCalle &&
+          alcaldia === currentAlcaldia &&
+          codigoPostal === currentCodigoPostal
+        ) {
+          return false; // No es un duplicado
+        }
+  
+        return true; // Es un duplicado
+      }
+      return false; // No existe otra dirección con los mismos datos
+    } catch (error) {
+      console.error("Error al verificar la existencia de la dirección:", error);
+      return false;
+    }
+  };
+  
+
   const updateDireccion = async (e) => {
     e.preventDefault();
-
+  
+    // Validar que todos los campos estén completos
     if (!calle || !alcaldia || !codigoPostal || !coords || !referencias || !entre_calle1 || !entre_calle2) {
       showErrorAlert("Todos los campos son obligatorios.");
       return;
     }
-
+  
+    // Validar el formato del código postal
+    const codigoPostalRegex = /^[0-9]{5}$/;
+    if (!codigoPostalRegex.test(codigoPostal)) {
+      showErrorAlert("El código postal debe contener exactamente 5 dígitos numéricos.");
+      return;
+    }
+  
     try {
+      // Verificar si la dirección ya existe y no es la misma que la actual
+      const isDuplicate = await checkDireccionExistente();
+      if (isDuplicate) {
+        showErrorAlert("Ya existe otra dirección con los mismos datos.");
+        return;
+      }
+  
+      // Crear el objeto con los datos de la dirección a actualizar
       const datosDireccion = {
         idDireccion: parseInt(ID_Direccion),
         calle,
@@ -122,14 +171,12 @@ const CompEditDireccion = () => {
         entre_calle1,
         entre_calle2,
       };
-
-      console.log("JSON enviado al backend:", JSON.stringify(datosDireccion, null, 2));
+  
+      // Hacer la solicitud PUT para actualizar la dirección
       const response = await axios.put(updURI, datosDireccion, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-
+  
       if (response.status === 200) {
         Swal.fire("Éxito", "La dirección fue actualizada correctamente.", "success");
         navigate(`/showDeportivos/admin/null`);
@@ -141,11 +188,14 @@ const CompEditDireccion = () => {
       showErrorAlert("Ocurrió un error al actualizar la dirección.");
     }
   };
+  
+  
 
   const getDireccionById = async () => {
     try {
       const res = await axios.get(`${URI}?idDireccion=${ID_Direccion}`);
       const data = res.data;
+
       setCalle(data.calle || "");
       setAlcaldia(data.alcaldia || "Álvaro Obregón");
       setCodigoPostal(data.codigoPostal || "");
@@ -154,11 +204,9 @@ const CompEditDireccion = () => {
       setEntreCalle2(data.entre_calle2 || "");
 
       const [lat, lng] = data.coords.split(",").map(parseFloat);
-      const markerCoords = { lat, lng };
       setCoords(data.coords || "");
-      setMarker(markerCoords);
-      setCenter(markerCoords);
-      setZoom(18); // Zoom en las coordenadas cargadas
+      setMarker({ lat, lng });
+      setCenter({ lat, lng });
     } catch (error) {
       console.error("Error al obtener la dirección:", error);
       showErrorAlert("No se pudo cargar la dirección.");
@@ -189,7 +237,20 @@ const CompEditDireccion = () => {
         </div>
         <div className="form-group">
           <label>Código Postal</label>
-          <input type="text" value={codigoPostal} onChange={(e) => setCodigoPostal(e.target.value)} className="form-control" maxLength={5} />
+          <input
+            type="text"
+            value={codigoPostal}
+            onChange={(e) => {
+              const input = e.target.value;
+              if (/^[0-9]*$/.test(input) && input.length <= 5) {
+                setCodigoPostal(input);
+              } else if (!/^[0-9]*$/.test(input)) {
+                showErrorAlert("El código postal solo puede contener números.");
+              }
+            }}
+            className="form-control"
+            maxLength={5}
+          />
         </div>
         <div>
           <label>Coordenadas</label>

@@ -141,15 +141,10 @@ body {
   background-color: #0056b3;
 }
 
+/* Centrar los acordeones y sus títulos */
 .deportivos-accordion {
-  width: 100%;
-}
-
-.deportivo-card {
-  background-color: #f9f9f9;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  overflow: hidden;
+  width: 80%; /* Ajusta el ancho de los acordeones */
+  margin: 0 auto; /* Centra horizontalmente */
 }
 
 .accordion-header {
@@ -158,13 +153,29 @@ body {
   padding: 10px;
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* Centra el texto del título */
   align-items: center;
+  text-align: center; /* Asegura que el texto esté centrado */
+  border-radius: 5px; /* Opcional: agrega bordes redondeados */
 }
 
 .accordion-header:hover {
-  background-color: #59698d;
+  background-color: #59698d; /* Color más oscuro al pasar el cursor */
 }
+
+.accordion-content {
+  padding: 10px;
+  text-align: center; /* Centra el contenido dentro del acordeón */
+}
+
+.deportivo-card {
+  background-color: #f9f9f9;
+  margin: 10px auto; /* Espaciado entre las tarjetas y centrado */
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%; /* Opcional: limita el ancho al contenido del acordeón */
+}
+
 
 .accordion-content {
   padding: 10px;

@@ -7,7 +7,7 @@ const URI = "http://localhost:8080/api/encargados/guardarEncargado";
 
 const CompCreateEncargado = () => {
     const navigate = useNavigate();
-    const { deportivo_id } = useParams(); // Recibir el ID del deportivo
+    const { deportivo_id } = useParams();
     const [encargado, setEncargado] = useState({
         nombre: "",
         primerApellido: "",
@@ -19,22 +19,46 @@ const CompCreateEncargado = () => {
         contrasena: ""
     });
 
+    const [rfcError, setRfcError] = useState("");
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setEncargado({
             ...encargado,
             [name]: value,
         });
+
+        if (name === "rfcCurp") {
+            validateRfc(value);
+        }
+    };
+
+    const validateRfc = (rfc) => {
+        const rfcRegex = /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{3}$/i;
+        if (!rfcRegex.test(rfc)) {
+            setRfcError("El RFC no es válido. Asegúrate de que tenga el formato correcto.");
+        } else {
+            setRfcError("");
+        }
     };
 
     const store = async (e) => {
         e.preventDefault();
 
+        if (rfcError) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Por favor, corrige los errores en el formulario antes de enviarlo.",
+            });
+            return;
+        }
+
         try {
             const encargadoData = {
                 ...encargado,
                 deportivo: {
-                    idDeportivo: parseInt(deportivo_id), // Relación con el ID del deportivo
+                    idDeportivo: parseInt(deportivo_id),
                 },
             };
 
@@ -43,7 +67,7 @@ const CompCreateEncargado = () => {
             const response = await axios.post(URI, encargadoData);
             if (response.status === 201) {
                 Swal.fire("Éxito", "El encargado fue creado correctamente.", "success");
-                navigate(`/showDeportivos/admin/null`); // Redirigir a la página de éxito (puedes cambiar la ruta)
+                navigate(`/showDeportivos/admin/null`);
             }
         } catch (error) {
             console.error("Error al crear el encargado:", error);
@@ -128,12 +152,17 @@ const CompCreateEncargado = () => {
                     <input
                         type="text"
                         name="rfcCurp"
-                        value={encargado.rfcCurp}
-                        onChange={handleChange}
-                        className="form-control"
-                        maxLength={13} // Limita el número máximo de caracteres a 13
+                        value={encargado.rfcCurp.toUpperCase()} // Convertir automáticamente a mayúsculas
+                        onChange={(e) => {
+                            const value = e.target.value.toUpperCase(); // Forzar mayúsculas
+                            setEncargado({ ...encargado, rfcCurp: value });
+                            validateRfc(value); // Validar RFC
+                        }}
+                        className={`form-control ${rfcError ? "is-invalid" : ""}`} // Mostrar error si no cumple el formato
+                        maxLength={13} // RFC estándar tiene 13 caracteres
                         required
                     />
+                    {rfcError && <div className="invalid-feedback">{rfcError}</div>}
                 </div>
                 <div className="form-group">
                     <label>Contraseña</label>
@@ -142,8 +171,10 @@ const CompCreateEncargado = () => {
                         name="contrasena"
                         value={encargado.contrasena}
                         onChange={handleChange}
-                        className={`form-control ${encargado.contrasena.length > 0 && encargado.contrasena.length < 8 ? 'is-invalid' : ''}`}
-                        minLength={8} // Limita la longitud mínima a 8 caracteres
+                        className={`form-control ${
+                            encargado.contrasena.length > 0 && encargado.contrasena.length < 8 ? "is-invalid" : ""
+                        }`}
+                        minLength={8}
                         required
                     />
                     {encargado.contrasena.length > 0 && encargado.contrasena.length < 8 && (
@@ -152,7 +183,6 @@ const CompCreateEncargado = () => {
                         </div>
                     )}
                 </div>
-
                 <button type="submit" className="btn btn-primary">
                     Crear Encargado
                 </button>

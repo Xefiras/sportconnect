@@ -343,7 +343,7 @@ const CompShowDeportivos = () => {
                                     <div className="sub-accordion-content">
                                         {shouldShowDiv && (
                                         <Link
-                                            to={`/createCancha/${deportivo.idDeportivo}/coords/${RFC_CURP}`}
+                                            to={`/createCancha/${deportivo.idDeportivo}/${deportivo.direccion.coords}/${RFC_CURP}`}
                                             className="btn btn-primary mb-3"
                                         >
                                             <i className="fa-solid fa-plus"></i> Crear Cancha

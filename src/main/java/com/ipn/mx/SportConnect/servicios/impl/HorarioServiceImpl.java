@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service // Marca esta clase como un componente de servicio en Spring.
 public class HorarioServiceImpl implements HorarioService {
@@ -21,6 +22,10 @@ public class HorarioServiceImpl implements HorarioService {
 
     public List<Horario> obtenerHorariosPorDeportivo(int deportivoid) {
         return horarioRepository.findByDeportivo_IdDeportivo(deportivoid);
+    }
+
+    public Optional<Horario> obtenerHorarioPorId(long horarioid) {
+        return horarioRepository.findById(horarioid);
     }
 
     public Horario guardarHorario(Horario horario) {

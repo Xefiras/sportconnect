@@ -34,7 +34,7 @@ public class DeportivoServiceImpl implements DeportivoService {
     }
 
     @Override
-    public Deportivo obtenerDeportivo(int idDeportivo) {
+    public Deportivo obtenerDeportivo(Long idDeportivo) {
         return deportivoRepository.findById(idDeportivo).orElse(null);
     }
 
@@ -49,7 +49,7 @@ public class DeportivoServiceImpl implements DeportivoService {
     }
 
     @Override
-    public void eliminarDeportivo(int idDeportivo) {
+    public void eliminarDeportivo(Long idDeportivo) {
         deportivoRepository.deleteById(idDeportivo);
     }
 

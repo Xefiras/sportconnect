@@ -23,6 +23,7 @@ public class Direccion implements Serializable {
 
     @OneToOne
     @JsonBackReference // Evita serializar al padre en el JSON
+    //deportivo_id es el nombre de la columna de la tabla dirección, mientras que id_deportivo es el nombre de la tabla deportivo
     @JoinColumn(name = "deportivo_id", referencedColumnName = "id_deportivo", nullable = false)
     private Deportivo deportivo;
 

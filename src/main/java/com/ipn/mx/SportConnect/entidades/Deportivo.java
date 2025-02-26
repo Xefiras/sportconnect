@@ -20,7 +20,7 @@ public class Deportivo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_deportivo")
-    private int idDeportivo; //en vez de usar id_deportivo se usa idDeportivo para poder generar el método de busqueda por rfc en EncargadoRespository
+    private Long idDeportivo; //en vez de usar id_deportivo se usa idDeportivo para poder generar el método de busqueda por rfc en EncargadoRespository
 
     @Column(name = "numero_registro", length = 100, nullable = false)
     private int numero_registro;

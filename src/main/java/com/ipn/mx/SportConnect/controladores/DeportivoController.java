@@ -48,7 +48,7 @@ public class DeportivoController {
     @GetMapping("/obtenerDeportivo")
     //http://localhost:8080/api/deportivos/obtenerDeportivo?idDeportivo=11
     //Se hace el requestparam con el nombre de la variable que está en el parámetro, mas no con la que está definida en la BD
-    public Deportivo obtenerDeportivo(@RequestParam int idDeportivo){
+    public Deportivo obtenerDeportivo(@RequestParam Long idDeportivo){
         try{
             return deportivoService.obtenerDeportivo(idDeportivo);
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class DeportivoController {
 
     //Ya elimina el deportivo y todo lo relacionado al mismo gracias a las relaciones cardinales
     @DeleteMapping("/deleteDeportivo")
-    public String deleteDeportivo(@RequestParam int idDeportivo){
+    public String deleteDeportivo(@RequestParam Long idDeportivo){
         try{
             deportivoService.eliminarDeportivo(idDeportivo);
             return "Deportivo eliminado con éxito!";

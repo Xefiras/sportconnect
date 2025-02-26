@@ -71,6 +71,5 @@ public class Cancha implements Serializable {
                 "capacidad_jugadores" + capacidad_jugadores +
                 "coordenadas_cancha" + coordenadas_cancha +
                 '}';
-
     }
 }

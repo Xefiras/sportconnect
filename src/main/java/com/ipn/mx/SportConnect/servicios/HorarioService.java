@@ -2,6 +2,7 @@ package com.ipn.mx.SportConnect.servicios;
 
 import com.ipn.mx.SportConnect.entidades.Horario;
 import java.util.List;
+import java.util.Optional;
 
 public interface HorarioService {
 
@@ -12,4 +13,6 @@ public interface HorarioService {
 
     // Método para guardar un nuevo horario
     Horario guardarHorario(Horario horario);
+
+    Optional<Horario> obtenerHorarioPorId(long horarioId);
 }

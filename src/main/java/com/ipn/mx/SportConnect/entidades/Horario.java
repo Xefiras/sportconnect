@@ -38,5 +38,4 @@ public class Horario implements Serializable {
     private LocalTime horaCierre;
 
     private boolean inhabil; // Esta columna se genera automáticamente a partir del nombre del atributo.
-
 }

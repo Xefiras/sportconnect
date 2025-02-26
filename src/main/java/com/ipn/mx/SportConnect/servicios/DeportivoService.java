@@ -5,10 +5,10 @@ import java.util.List;
 
 public interface DeportivoService {
     Deportivo crearDeportivo(Deportivo deportivo);
-    Deportivo obtenerDeportivo(int idDeportivo);
+    Deportivo obtenerDeportivo(Long idDeportivo);
     List<Deportivo> obtenerDeportivos();
     void updateDeportivo(Deportivo deportivo);
-    void eliminarDeportivo(int idDeportivo);
+    void eliminarDeportivo(Long idDeportivo);
     List<Deportivo> getDeportivosByEncargado(String rfcCurp);
     //String deleteDeportivoInfo(int idDeportivo);
 }

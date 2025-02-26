@@ -223,3 +223,35 @@ h1{
   border-radius: 5px;
   margin-bottom: 5px;
 }
+
+.horarios-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px; /* Espaciado entre tarjetas */
+}
+
+.horario-info {
+  width: 180px; /* Define un ancho fijo */
+  height: 150px; /* Define un alto fijo */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.horario-info.inhabil {
+  background-color: #ffcccc;
+  border: 2px solid red;
+}
+
+.horario-info.habil {
+  background-color: #d9f1ff;
+}
+
+

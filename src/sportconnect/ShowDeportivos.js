@@ -68,18 +68,52 @@ const CompShowDeportivos = () => {
         return filteredDeportivos;
       };    
 
+    const ordenarHorariosPorDia = (horarios) => {
+        const diasSemanaOrden = {
+            "Lunes": 1, "Martes": 2, "Miércoles": 3, "Jueves": 4,
+            "Viernes": 5, "Sábado": 6, "Domingo": 7
+        };
+    
+        return horarios.sort((a, b) => diasSemanaOrden[a.diaSemana] - diasSemanaOrden[b.diaSemana]);
+    };
+    
+    const formatHour = (hora) => {
+        if (!hora) return "";
+        
+        const [hour, minutes] = hora.split(":"); // Obtener solo HH y MM
+        let hourInt = parseInt(hour, 10);
+        const period = hourInt >= 12 ? "PM" : "AM";
+    
+        // Convertir formato 24h a 12h
+        hourInt = hourInt % 12 || 12; // Si es 0, cambiar a 12 (caso especial)
+    
+        return `${hourInt}:${minutes} ${period}`;
+    };    
+
     const getDeportivoInfo = async () => {
         const res = await axios.get(`${URI}deportivos/obtenerDeportivos`);
-        setDeportivos(res.data);
-       // console.log(res.data)
+        
+        // Ordenamos los horarios por día de la semana
+        const sortedData = res.data.map(deportivo => ({
+            ...deportivo,
+            horarios: ordenarHorariosPorDia(deportivo.horarios)
+        }));
+    
+        setDeportivos(sortedData);
     }
-
+    
     const getDeportivoInfoDeEncargado = async () => {
-      //  console.log("rfc", RFC_CURP)
-        const res = await axios.get(`${URI}deportivos/getDeportivoByEncargado/${RFC_CURP}`, {
-        });
-        setDeportivos(res.data);
-    }    
+        const res = await axios.get(`${URI}deportivos/getDeportivoByEncargado/${RFC_CURP}`);
+    
+        // Ordenamos los horarios por día de la semana
+        const sortedData = res.data.map(deportivo => ({
+            ...deportivo,
+            horarios: ordenarHorariosPorDia(deportivo.horarios)
+        }));
+    
+        setDeportivos(sortedData);
+    }
+    
 
     const deleteDeportivoInfo = async (id) => {
         await axios.delete(`${URI}deportivos/deleteDeportivo?idDeportivo=${id}`);
@@ -224,6 +258,7 @@ const CompShowDeportivos = () => {
                                     <strong> - Regaderas:</strong> {deportivo.tiene_regaderas ? 'Sí' : 'No'}
                                     <strong> - Médico:</strong> {deportivo.tiene_medico ? 'Sí' : 'No'}
                                 </p>
+                                
                                 {shouldHideDiv && (
                                     <div>
                                         <Link
@@ -241,6 +276,42 @@ const CompShowDeportivos = () => {
                                     </div>
                                 )}
     
+                            <div className="sub-accordion">
+                                <h3 onClick={() => toggleSubAccordion(1)}>Horarios</h3>
+                                {expandedSubAccordion === 1 && (
+                                    <div className="horarios-container">
+                                        {deportivo.horarios && deportivo.horarios.length > 0 ? (
+                                            deportivo.horarios.map((horario, index) => (
+                                                <div key={index} className={`horario-info ${horario.inhabil ? 'inhabil' : 'habil'}`}>
+                                                    <p>{horario.diaSemana}</p>
+                                                    {horario.inhabil ? (
+                                                        <p><strong>Día inhabil</strong></p>
+                                                    ) : (
+                                                        <>
+                                                            <p><strong>Hora de Apertura:</strong> {formatHour(horario.horaApertura)}</p>
+                                                            <p><strong>Hora de Cierre:</strong> {formatHour(horario.horaCierre)}</p>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <p>No hay horarios disponibles.</p>
+                                        )}     
+                                        {shouldHideDiv && (
+                                            <div>
+                                                <Link
+                                                    to={`/editHorario/${deportivo.idDeportivo}`}
+                                                    className="btn btn-info"
+                                                >
+                                                    <i className="fa-regular fa-pen-to-square"></i> Editar Horario
+                                                </Link>
+                                            </div> 
+                                        )}                                     
+                                </div>
+                                                          
+                                )}                                                                                     
+                            </div>
+
                                 {deportivo.direccion && (
                                     <div className="sub-accordion">
                                         <h3 onClick={() => toggleSubAccordion(0)}>Dirección</h3>

@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const updURI = 'http://localhost:8000/updateHorarios/';
-const recURI = 'http://localhost:8000/getHorarioDeportivo/';
+const updURI = 'http://localhost:8080/api/horarios/guardarHorario'; //URI para guardar el deportivo (quitar el slash del final)
+const recURI = 'http://localhost:8080/api/horarios/deportivo/'; //URI para obtener el horario por deportivo
 
 const CompEditHorario = () => {
     const navigate = useNavigate();
@@ -23,30 +23,32 @@ const CompEditHorario = () => {
         const fetchHorarios = async () => {
             try {
                 const response = await axios.get(`${recURI}${ID_Deportivo}`);
-                const horariosData = response.data;
-
-                // Actualizar el estado de horarios con los datos recuperados
-                const updatedHorarios = horarios.map((horario, index) => {
-                    const horarioData = horariosData[index] || {};
-                    return {
-                        ...horario,
-                        hora_apertura: horarioData.hora_apertura || '',
-                        hora_cierre: horarioData.hora_cierre || '',
-                        inhabil: horarioData.inhabil || false,
-                        ID_Horario: horarioData.ID_Horario || null
-                    };
+                const horariosData = response.data; // Respuesta del backend
+    
+                // Mapear la respuesta del backend a los días de la semana de nuestro estado
+                const updatedHorarios = horarios.map((horario) => {
+                    // Buscar si existe un horario en la respuesta que coincida con el día de la semana
+                    const found = horariosData.find(item => item.diaSemana.toLowerCase() === horario.dia_semana.toLowerCase());
+    
+                    return found ? {
+                        dia_semana: found.diaSemana,  // Mantener el formato del estado inicial
+                        hora_apertura: found.horaApertura ?? '', // Si es null, asignar cadena vacía
+                        hora_cierre: found.horaCierre ?? '', // Si es null, asignar cadena vacía
+                        inhabil: found.inhabil, // Se mantiene el booleano
+                        ID_Horario: found.idHorario // Asignar ID del horario existente
+                    } : horario; // Si no se encuentra, mantener el horario actual
                 });
-
+    
                 setHorarios(updatedHorarios);
-
             } catch (error) {
                 console.error('Error al obtener horarios:', error);
                 showErrorAlert('Hubo un error al obtener los horarios del deportivo.');
             }
         };
-
-        fetchHorarios(); // Obtener los horarios al cargar el componente
+    
+        fetchHorarios();
     }, [ID_Deportivo]);
+   
 
     const update = async (e) => {
         e.preventDefault();
@@ -54,22 +56,34 @@ const CompEditHorario = () => {
             const isValid = horarios.every((horario) =>
                 isValidHoras(horario.hora_apertura, horario.hora_cierre, horario.inhabil)
             );
-
+    
             if (!isValid) {
                 showErrorAlert("La hora de apertura no puede ser mayor que la de cierre, ni ambas deben ser iguales.");
                 return;
             }
-
-            const postData = { horarios };
-            await axios.put(updURI, postData);
-            showSuccessAlert("Horario Editado")
+    
+            // Formatear correctamente el array con la estructura esperada por el backend
+            const formattedHorarios = horarios.map((horario) => ({
+                idHorario: horario.ID_Horario,  // Usamos la propiedad correcta
+                diaSemana: horario.dia_semana,  // Ajustamos el nombre al esperado
+                horaApertura: horario.inhabil ? null : horario.hora_apertura, // Si está inhabilitado, enviar `null`
+                horaCierre: horario.inhabil ? null : horario.hora_cierre, // Si está inhabilitado, enviar `null`
+                inhabil: horario.inhabil
+            }));
+    
+            //console.log("Datos enviados al backend:", formattedHorarios); // Depuración
+    
+            // Enviar el array directamente, sin envolver en un objeto
+            await axios.post(updURI, formattedHorarios);
+    
+            showSuccessAlert("Horario Editado");
             navigate(`/showDeportivos/admin/null`);
-
+    
         } catch (error) {
             console.error("Error:", error);
             showErrorAlert("Hubo un error al actualizar los horarios. Inténtalo de nuevo.");
         }
-    };
+    };    
 
     const showErrorAlert = (message) => {
         Swal.fire({

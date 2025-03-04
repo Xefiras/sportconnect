@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface CanchaService {
     void crearCancha(Cancha cancha);
-    Cancha obtenerCancha(int idCancha);
+    Cancha obtenerCancha(Long idCancha);
     List<Cancha> obtenerCanchas();
     void updateCancha(Cancha cancha);
-    void eliminarCancha(int idCancha);
+    void eliminarCancha(Long idCancha);
 }

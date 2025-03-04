@@ -21,7 +21,7 @@ public class Mejora implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_mejora;
 
-    @ManyToOne
+    @ManyToOne //muchas mejoras pertenecen a una cancha
     @JoinColumn(name = "cancha_id", referencedColumnName = "id_cancha")
     @JsonBackReference // Evita serializar al padre en el JSON
     private Cancha cancha;
@@ -37,10 +37,6 @@ public class Mejora implements Serializable {
 
     @Column(name = "fecha_implementación", length = 100, nullable = false)
     private Date fecha_implementacion;
-
-    /*@OneToOne
-    @JoinColumn(name = "cancha_id", referencedColumnName = "id_cancha")
-    private Cancha cancha;*/
 
     @Override
     public String toString(){

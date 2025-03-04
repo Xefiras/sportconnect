@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CanchaRepository extends JpaRepository<Cancha, Integer> {
+public interface CanchaRepository extends JpaRepository<Cancha, Long> {
     //Todos los metodos CRUD
 }

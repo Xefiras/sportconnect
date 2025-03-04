@@ -39,7 +39,7 @@ public class CanchaController {
     }
 
     @GetMapping("/obtenerCancha")
-    public Cancha obtenerCancha(@RequestParam int idCancha) {
+    public Cancha obtenerCancha(@RequestParam Long idCancha) {
         try{
             return CanchaService.obtenerCancha(idCancha);
         } catch (Exception e) {
@@ -112,7 +112,7 @@ public class CanchaController {
 
             // Eliminar una cancha
     @DeleteMapping("/deleteCancha")
-    public String deleteCancha(@RequestParam int idCancha){
+    public String deleteCancha(@RequestParam Long idCancha){
         try{
             CanchaService.eliminarCancha(idCancha);
         }catch(Exception e){

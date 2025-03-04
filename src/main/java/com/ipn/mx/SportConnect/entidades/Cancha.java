@@ -22,7 +22,7 @@ public class Cancha implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_cancha;
+    private Long id_cancha;
 
     @ManyToOne
     @JoinColumn(name = "deportivo_id", referencedColumnName = "id_deportivo")

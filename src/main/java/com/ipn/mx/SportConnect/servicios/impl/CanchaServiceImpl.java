@@ -21,7 +21,7 @@ public class CanchaServiceImpl implements CanchaService{
     }
 
     @Override
-    public Cancha obtenerCancha(int idCancha) {
+    public Cancha obtenerCancha(Long idCancha) {
         return canchaRepository.findById(idCancha).orElse(null);
     }
 
@@ -36,7 +36,7 @@ public class CanchaServiceImpl implements CanchaService{
     }
 
     @Override
-    public void eliminarCancha(int idCancha) {
+    public void eliminarCancha(Long idCancha) {
         canchaRepository.deleteById(idCancha);
     }
 }
